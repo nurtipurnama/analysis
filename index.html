@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Match Analyzer Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sports Match Analyzer Pro</h1>
+            <p class="subtitle">Advanced statistical analysis for sports betting</p>
+        </header>
+
+        <main>
+            <section class="card" id="team-setup">
+                <h2><span class="material-symbols-outlined">groups</span> Team Information</h2>
+                <form id="team-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="team1">Team 1 Name</label>
+                            <input type="text" id="team1" placeholder="Enter team name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="team2">Team 2 Name</label>
+                            <input type="text" id="team2" placeholder="Enter team name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="team1-ranking">Team 1 Ranking</label>
+                            <input type="number" id="team1-ranking" placeholder="Ranking (optional)" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="team2-ranking">Team 2 Ranking</label>
+                            <input type="number" id="team2-ranking" placeholder="Ranking (optional)" min="1">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="match-importance">Match Importance</label>
+                            <select id="match-importance">
+                                <option value="1">Regular</option>
+                                <option value="1.5">Playoffs</option>
+                                <option value="2">Championship</option>
+                                <option value="1.2">Tournament</option>
+                                <option value="0.8">Friendly Match</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="match-location">Match Location</label>
+                            <select id="match-location">
+                                <option value="neutral">Neutral</option>
+                                <option value="home">Team 1 Home</option>
+                                <option value="away">Team 2 Home</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <section class="card" id="match-data">
+                <h2><span class="material-symbols-outlined">analytics</span> Match Data</h2>
+                
+                <!-- Score Input Sections -->
+                <div class="score-input-container">
+                    <h3><span class="material-symbols-outlined">scoreboard</span> Head-to-Head Matches</h3>
+                    <div class="form-row series-entry-rows">
+                        <div class="form-group full-width">
+                            <label id="h2h-team1-label">Team 1 Scores (comma separated)</label>
+                            <input type="text" id="h2h-team1" placeholder="e.g. 0,0,0,0,0,...">
+                        </div>
+                        <div class="form-group full-width">
+                            <label id="h2h-team2-label">Team 2 Scores (comma separated)</label>
+                            <input type="text" id="h2h-team2" placeholder="e.g. 0,0,0,0,0,...">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <button type="button" id="h2h-add-btn" class="btn btn-primary">
+                                <span class="material-symbols-outlined">playlist_add</span> Add Head-to-Head Data
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <h3><span class="material-symbols-outlined">history</span> Last Matches Team 1</h3>
+                    <div class="form-row series-entry-rows">
+                        <div class="form-group full-width">
+                            <label id="team1-scores-label">Team 1 Scores (comma separated)</label>
+                            <input type="text" id="team1-scores" placeholder="e.g. 0,0,0,0,0,...">
+                        </div>
+                        <div class="form-group full-width">
+                            <label id="team1-opponent-label">Opponent Scores (comma separated)</label>
+                            <input type="text" id="team1-opponent" placeholder="e.g. 0,0,0,0,0,...">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <button type="button" id="team1-add-btn" class="btn btn-primary">
+                                <span class="material-symbols-outlined">playlist_add</span> Add Team 1 Data
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <h3><span class="material-symbols-outlined">history</span> Last Matches Team 2</h3>
+                    <div class="form-row series-entry-rows">
+                        <div class="form-group full-width">
+                            <label id="team2-scores-label">Team 2 Scores (comma separated)</label>
+                            <input type="text" id="team2-scores" placeholder="e.g. 0,0,0,0,0,...">
+                        </div>
+                        <div class="form-group full-width">
+                            <label id="team2-opponent-label">Opponent Scores (comma separated)</label>
+                            <input type="text" id="team2-opponent" placeholder="e.g. 0,0,0,0,0,...">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <button type="button" id="team2-add-btn" class="btn btn-primary">
+                                <span class="material-symbols-outlined">playlist_add</span> Add Team 2 Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Data Sufficiency Indicator -->
+                <div class="data-sufficiency-container">
+                    <h3>Data Sufficiency</h3>
+                    <div class="data-meters">
+                        <div class="data-meter">
+                            <label>H2H Data</label>
+                            <div class="meter-container">
+                                <div id="h2h-meter" class="meter" style="width: 0%"></div>
+                            </div>
+                            <span id="h2h-count">0 matches</span>
+                        </div>
+                        <div class="data-meter">
+                            <label>Team 1 Data</label>
+                            <div class="meter-container">
+                                <div id="team1-meter" class="meter" style="width: 0%"></div>
+                            </div>
+                            <span id="team1-count">0 matches</span>
+                        </div>
+                        <div class="data-meter">
+                            <label>Team 2 Data</label>
+                            <div class="meter-container">
+                                <div id="team2-meter" class="meter" style="width: 0%"></div>
+                            </div>
+                            <span id="team2-count">0 matches</span>
+                        </div>
+                    </div>
+                    <div id="data-quality-indicator" class="data-quality insufficient">
+                        <span class="material-symbols-outlined">info</span>
+                        <span id="data-quality-text">Add more match data for better predictions</span>
+                    </div>
+                </div>
+                
+                <!-- H2H Section -->
+                <div class="match-section">
+                    <h3>Head-to-Head Matches</h3>
+                    <div class="match-summary" id="h2h-match-summary">
+                        <p>No matches added yet.</p>
+                    </div>
+                </div>
+                
+                <!-- Team 1 Last Matches -->
+                <div class="match-section">
+                    <h3>Team 1 Recent Matches</h3>
+                    <div class="match-summary" id="team1-match-summary">
+                        <p>No matches added yet.</p>
+                    </div>
+                </div>
+                
+                <!-- Team 2 Last Matches -->
+                <div class="match-section">
+                    <h3>Team 2 Recent Matches</h3>
+                    <div class="match-summary" id="team2-match-summary">
+                        <p>No matches added yet.</p>
+                    </div>
+                </div>
+                
+                <!-- Data Controls -->
+                <div class="data-controls">
+                    <button type="button" id="clear-data-btn" class="btn btn-outline">
+                        <span class="material-symbols-outlined">delete</span> Clear All Data
+                    </button>
+                </div>
+            </section>
+
+            <section class="card" id="betting-lines">
+                <h2><span class="material-symbols-outlined">monetization_on</span> Betting Lines</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="betting-line">Total Line</label>
+                        <input type="number" id="betting-line" placeholder="Total line" step="0.5" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="point-spread">Point Spread</label>
+                        <input type="number" id="point-spread" placeholder="Point spread" step="0.5" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="spread-direction">Spread Favorite</label>
+                        <select id="spread-direction">
+                            <option value="team1">Team 1</option>
+                            <option value="team2">Team 2</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Model options section -->
+                <div class="form-row model-options-row">
+                    <div class="form-group">
+                        <label for="model-options">Analysis Method</label>
+                        <select id="model-options">
+                            <option value="ensemble">Ensemble (All Models)</option>
+                            <option value="catboost">CatBoost (Recommended)</option>
+                            <option value="xgboost">XGBoost Model</option>
+                            <option value="statistical">Statistical Model</option>
+                        </select>
+                    </div>
+                    <div class="form-group model-info-box">
+                        <div class="model-info-icon">?</div>
+                        <div class="model-info-content">
+                            <strong>Ensemble:</strong> Combines all models with dynamic weighting for optimal predictions<br>
+                            <strong>CatBoost:</strong> Best for categorical data and small datasets with regularization<br>
+                            <strong>XGBoost:</strong> Advanced machine learning to find complex patterns<br>
+                            <strong>Statistical:</strong> Uses traditional statistical methods (fastest option)
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <button id="analyze-button" class="btn btn-primary">
+                <span class="material-symbols-outlined">data_check</span> Analyze Data
+            </button>
+
+            <section class="card results-section" id="results">
+                <h2><span class="material-symbols-outlined">insights</span> Analysis Results</h2>
+                <div id="analysis-loading" class="hidden">
+                    <div class="spinner"></div>
+                    <p>Analyzing data...</p>
+                </div>
+                <div id="analysis-results" class="hidden">
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <h3>Predicted Winner</h3>
+                            <div id="winner-prediction"></div>
+                        </div>
+                        <div class="result-card">
+                            <h3>Score Projection</h3>
+                            <div id="score-prediction"></div>
+                        </div>
+                        <div class="result-card">
+                            <h3>Betting Recommendation</h3>
+                            <div id="betting-recommendation"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="explanation-box">
+                        <h3>Analysis Explanation</h3>
+                        <div id="analysis-explanation"></div>
+                    </div>
+                    
+                    <div class="result-charts">
+                        <div class="chart-card">
+                            <h3>Win Probability Distribution</h3>
+                            <div class="chart-container">
+                                <canvas id="win-probability-chart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h3>Model Confidence Scores</h3>
+                            <div class="chart-container">
+                                <canvas id="model-confidence-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Sports Match Analyzer Pro &copy; 2025</p>
+        </footer>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
